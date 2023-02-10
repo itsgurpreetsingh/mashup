@@ -5,3 +5,4 @@ moviepy==1.0.3
 pydub==0.25.1
 mutagen==1.46.0
 lxml==4.9.1
+ffprobe==0.5
