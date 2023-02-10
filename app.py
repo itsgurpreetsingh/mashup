@@ -15,7 +15,7 @@ import json
 
 st.title("MASHUP")
 with st.form("my_form"):
-    search=st.text_input("Enter name of singer", "Type Here ...") 
+    search=st.text_input("Enter name of singer") 
     n_video=st.number_input("Enter number of videos")
     StrtSec = st.number_input("Enter audio duration to cut")
     out=st.text_input("Enter name of output file", "output.mp3") 
@@ -28,6 +28,7 @@ with st.form("my_form"):
         print(StrtSec)
         print(out)
         n_video=int(n_video)
+        n_video=n_video-1
         StrtSec=int(StrtSec)
         EndSec = 20
         StrtTime = StrtSec*1000
@@ -132,3 +133,4 @@ with st.form("my_form"):
         # terminating the session
         s.quit()
         os.remove(out)
+        st.success("Mashup successfully sent on mail")
