@@ -76,7 +76,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
                     break
                 
                 vid = YouTube(link)
-                if vid.length>360 or vid.length<120:
+                if vid.length>360 and vid.length<120:
                     continue
                 Yvideo = vid.streams.filter(file_extension='mp4').order_by('resolution').desc()
                 v_name.append(vid.title)
