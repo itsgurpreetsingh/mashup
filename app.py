@@ -70,11 +70,12 @@ def proceed(search,n_video,StrtSec,out,mailid):
 
         for i in range(len(video_id)):
             url.append(f"https://www.youtube.com/watch?v={video_id[i]}")
- 
+        st.write(len(video_id))
         try:
             for link in url:
                 if(count==n_video):
                     break
+                link=link.strip()
                 vid = YouTube(link)
                 if vid.length>360 or vid.length<120:
                     continue
