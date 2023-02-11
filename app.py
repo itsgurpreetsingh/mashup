@@ -75,6 +75,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
             for link in url:
                 if(count==n_video):
                     break
+                st.write(f"break : {link}")
                 vid = YouTube(link)
                 if vid.length>360 or vid.length<120:
                     continue
@@ -157,7 +158,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
         os.remove('Mashup.zip')
         st.success("Mashup successfully sent on mail")
     
-st.title("MASHUP Generator")
+st.title("MASHUP GENERATOR")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
     n_video=st.number_input("Enter number of videos",0,step= 1,format='%d')
