@@ -75,7 +75,6 @@ def proceed(search,n_video,StrtSec,out,mailid):
             for link in url:
                 if(count==n_video):
                     break
-                st.write(f"break : {link}")
                 vid = YouTube(link)
                 if vid.length>360 or vid.length<120:
                     continue
@@ -86,6 +85,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
                 st.write(f"link : {link}")
                 st.write(f'downloaded : {vid.title}')
         except:
+            st.write(f"break : {link}")
             st.error("Connection problem please check your connection and try again")    
             st.stop()
 
