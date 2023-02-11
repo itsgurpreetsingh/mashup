@@ -19,6 +19,7 @@ def check(search,n_video,StrtSec,out,mailid):
             st.error('Output file format not supported please enter ".mp3"')   
             flag=False
     testEmail = mailid
+    testEmail=testEmail.strip()
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'    
     if(re.search(regex,testEmail)):   
         print("valid") 
