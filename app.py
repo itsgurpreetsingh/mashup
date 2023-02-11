@@ -5,7 +5,6 @@ from moviepy.editor import *
 from pydub import AudioSegment
 from mutagen.mp3 import MP3
 import streamlit as st
-from urllib.request import Request, urlopen
 from zipfile import *
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -85,7 +84,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
                 count=count+1
         except:
             st.error("Connection problem please check your connection and try again")    
-
+            st.stop()
 
         for j in range(count):
             video = VideoFileClip(f"{j}.mp4")
