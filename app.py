@@ -75,7 +75,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
                     break
                 
                 vid = YouTube(link)
-                if vid.length>360:
+                if vid.length>360 and vid.length<120:
                     continue
                 Yvideo = vid.streams.filter(file_extension='mp4').order_by('resolution').desc()
                 v_name.append(vid.title)
@@ -158,14 +158,16 @@ with st.form("my_form"):
     out=st.text_input("Enter name of output file", "output.mp3") 
     mailid=st.text_input("Enter sender address") 
     submitted = st.form_submit_button("Submit")
+    
     if submitted:
         st.write("text_input", search, "number_input", n_video,"number_input",StrtSec,"text_input",out,"text_input",mailid)
         n_video=int(n_video)
-        StrtSec=int(StrtSec)
-        flag=check(search,n_video,StrtSec,out,mailid)
-        if(flag==True):
-            proceed(search,n_video,StrtSec,out,mailid)
-        else:
-            st.error(flag)
-            
+        with st.spinner('Your mashup is in processing..It may take few minutes'):
+
+            flag=check(search,n_video,StrtSec,out,mailid)
+            if(flag==True):
+                proceed(search,n_video,StrtSec,out,mailid)
+            else:
+                st.error(flag)
+        st.success('Done!')    
     
