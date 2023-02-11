@@ -70,7 +70,6 @@ def proceed(search,n_video,StrtSec,out,mailid):
 
         for i in range(len(video_id)):
             url.append(f"https://www.youtube.com/watch?v={video_id[i]}")
-            st.write(url[i])
  
         try:
             for link in url:
@@ -79,7 +78,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
                 vid = YouTube(link)
                 if vid.length>360 or vid.length<120:
                     continue
-                Yvideo = vid.streams.filter(file_extension='mp4').order_by('resolution').desc()
+                Yvideo = vid.streams.filter(file_extension='mp4')
                 v_name.append(vid.title)
                 Yvideo.get_lowest_resolution().download(output_path='./',filename=f"{count}.mp4")
                 count=count+1
@@ -158,7 +157,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
         os.remove('Mashup.zip')
         st.success("Mashup successfully sent on mail")
     
-st.title("MASHUP")
+st.title("MASHUP Generator")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
     n_video=st.number_input("Enter number of videos",0,step= 1,format='%d')
