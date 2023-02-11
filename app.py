@@ -29,9 +29,6 @@ def check(search,n_video,StrtSec,out,mailid):
     if type(n_video)=='int' and type(StrtSec)=='int':
         error="Audio duration and number of videos must be an integer"
 
-    if StrtSec<20:
-        error='Audio duration to cut must be greater than 20'
-
     if(n_video==0):
         error='Enter valid no of videos greater or equal to 2'  
 
