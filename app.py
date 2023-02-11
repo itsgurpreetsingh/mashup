@@ -5,6 +5,7 @@ from moviepy.editor import *
 from pydub import AudioSegment
 from mutagen.mp3 import MP3
 import streamlit as st
+from zipfile import *
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -106,7 +107,9 @@ def proceed(search,n_video,StrtSec,out,mailid):
         clips = [AudioFileClip(c) for c in audio_clip_paths]
         final_clip = concatenate_audioclips(clips)
         final_clip.write_audiofile(out)
-
+        
+        with ZipFile(f'Mashup.zip','w',compression= ZIP_BZIP2 , allowZip64=True, compresslevel=9) as zip:
+            zip.write(out)
         for f in range(count):
             os.remove(f'{f}.mp3')
             os.remove(f'{f}.mp4')
@@ -119,14 +122,14 @@ def proceed(search,n_video,StrtSec,out,mailid):
         msg['Subject'] = "Mashup file"
         body = "Your mashup"
         msg.attach(MIMEText(body, 'plain'))
-        attachment = open(out, "rb")
+        attachment = open('Mashup.zip', "rb")
         p = MIMEBase('application', 'octet-stream')
         p.set_payload((attachment).read())
   
         # encode into base64
         encoders.encode_base64(p)
    
-        p.add_header('Content-Disposition', "attachment; filename= %s" % out)
+        p.add_header('Content-Disposition', "attachment; filename= %s" % "Mashup.zip")
   
         # attach the instance 'p' to instance 'msg'
         msg.attach(p)
@@ -149,13 +152,14 @@ def proceed(search,n_video,StrtSec,out,mailid):
         # terminating the session
         s.quit()
         os.remove(out)
+        os.remove('Mashup.zip')
         st.success("Mashup successfully sent on mail")
     
 st.title("MASHUP")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
-    n_video=st.number_input("Enter number of videos",format="%d")
-    StrtSec = st.number_input("Enter audio duration to cut",format="%d")
+    n_video=st.number_input("Enter number of videos",0,step= 1,format='%d')
+    StrtSec = st.number_input("Enter audio duration to cut",0,step= 1,format='%d')
     out=st.text_input("Enter name of output file", "output.mp3") 
     mailid=st.text_input("Enter sender address") 
     submitted = st.form_submit_button("Submit")
