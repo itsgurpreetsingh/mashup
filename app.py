@@ -12,24 +12,34 @@ from email.mime.base import MIMEBase
 from email import encoders
 import re
 import json
+def check(search,n_video,StrtSec,out,mailid):
+    error=True
+    if(out[-4:]!=".mp3"):
+            st.error('Output file format not supported please enter ".mp3"')   
+            flag=False
+    testEmail = mailid
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'    
+    if(re.search(regex,testEmail)):   
+        print("valid") 
+    else:   
+        error="Invalid email address"
 
-st.title("MASHUP")
-with st.form("my_form"):
-    search=st.text_input("Enter name of singer") 
-    n_video=st.number_input("Enter number of videos")
-    StrtSec = st.number_input("Enter audio duration to cut")
-    out=st.text_input("Enter name of output file", "output.mp3") 
-    mailid=st.text_input("Enter sender address") 
-    submitted = st.form_submit_button("Submit")
-    if submitted:
-        st.write("text_input", search, "number_input", n_video,"number_input",StrtSec,"text_input",out,"text_input",mailid)
+    if type(n_video)=='int' and type(StrtSec)=='int':
+        error="Audio duration and number of videos must be an integer"
+
+    if StrtSec<20:
+        error='Audio duration to cut must be greater than 20'
+
+    if(n_video==0):
+        error='Enter valid no of videos greater or equal to 2'  
+
+    return error  
+
+def proceed(search,n_video,StrtSec,out,mailid):
         print(search)
         print(n_video)
         print(StrtSec)
-        print(out)
-        n_video=int(n_video)
-        n_video=n_video-1
-        StrtSec=int(StrtSec)
+        print(out)  
         EndSec = 20
         StrtTime = StrtSec*1000
         v_name=[]
@@ -56,18 +66,23 @@ with st.form("my_form"):
                             video_id.append(v)
 
 
-        for i in range(n_video):
+        for i in range(len(video_id)):
             url.append(f"https://www.youtube.com/watch?v={video_id[i]}")
  
-        # try:
-            for link in url[0:n_video]:
+        try:
+            for link in url:
+                if(count==n_video):
+                    break
+                
                 vid = YouTube(link)
+                if vid.length>360:
+                    continue
                 Yvideo = vid.streams.filter(file_extension='mp4').order_by('resolution').desc()
                 v_name.append(vid.title)
                 Yvideo.get_lowest_resolution().download(output_path='./',filename=f"{count}.mp4")
                 count=count+1
-        # except:
-        #     sys.exit("Connection problem please check your connection and try again")        
+        except:
+            st.error("Connection problem please check your connection and try again")      
 
         for j in range(count):
             video = VideoFileClip(f"{j}.mp4")
@@ -134,3 +149,23 @@ with st.form("my_form"):
         s.quit()
         os.remove(out)
         st.success("Mashup successfully sent on mail")
+    
+st.title("MASHUP")
+with st.form("my_form"):
+    search=st.text_input("Enter name of singer") 
+    n_video=st.number_input("Enter number of videos",format="%d")
+    StrtSec = st.number_input("Enter audio duration to cut",format="%d")
+    out=st.text_input("Enter name of output file", "output.mp3") 
+    mailid=st.text_input("Enter sender address") 
+    submitted = st.form_submit_button("Submit")
+    if submitted:
+        st.write("text_input", search, "number_input", n_video,"number_input",StrtSec,"text_input",out,"text_input",mailid)
+        n_video=int(n_video)
+        StrtSec=int(StrtSec)
+        flag=check(search,n_video,StrtSec,out,mailid)
+        if(flag==True):
+            proceed(search,n_video,StrtSec,out,mailid)
+        else:
+            st.error(flag)
+            
+    
