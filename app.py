@@ -70,12 +70,12 @@ def proceed(search,n_video,StrtSec,out,mailid):
 
         for i in range(len(video_id)):
             url.append(f"https://www.youtube.com/watch?v={video_id[i]}")
+            st.write(url[i])
  
         try:
             for link in url:
                 if(count==n_video):
                     break
-                
                 vid = YouTube(link)
                 if vid.length>360 or vid.length<120:
                     continue
@@ -83,6 +83,8 @@ def proceed(search,n_video,StrtSec,out,mailid):
                 v_name.append(vid.title)
                 Yvideo.get_lowest_resolution().download(output_path='./',filename=f"{count}.mp4")
                 count=count+1
+                st.write(f"link : {link}")
+                st.write(f'downloaded : {vid.title}')
         except:
             st.error("Connection problem please check your connection and try again")    
             st.stop()
