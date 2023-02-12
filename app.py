@@ -46,28 +46,31 @@ def proceed(search,n_video,StrtSec,out,mailid):
         video_id=[]
         audio_clip_paths=[]
         url=[]
+        content=[]
+        scrip=[]
+        words=["songs","new+songs","old+songs",f"top{n_video}+songs",f"startup+songs"",hit+songs","beat+songs","best+songs","dance+songs","famous+songs"]
         query='+'.join(str(x) for x in search)
-
-        response=requests.get(f"https://www.youtube.com/results?search_query={query}").text
-        soup=BeautifulSoup(response,'lxml')
-        script=soup.find_all("script")[33]
-
-        json_text=re.search('var ytInitialData = (.+)[,;]{1}',str(script)).group(1)
-        json_data=json.loads(json_text)
-        content=(
+        for i in words:
+            response=requests.get(f"https://www.youtube.com/results?search_query={query}+{i}").text
+            soup=BeautifulSoup(response,'lxml')
+            scrip.append(soup.find_all("script")[33])
+        for script in scrip:
+            json_text=re.search('var ytInitialData = (.+)[,;]{1}',str(script)).group(1)
+            json_data=json.loads(json_text)
+            content.append((
             json_data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents']
-        )
-        for data in content:
-            for key,value in data.items():
-                if(type(value) is dict):
-                    for k,v in value.items():
-                        if k=="videoId" and len(v)==11:
-                            video_id.append(v)
-
-
+            ))
+        for k in content:    
+            for data in k:
+                for key,value in data.items():
+                    if(type(value) is dict):
+                        for k,v in value.items():
+                            if k=="videoId" and len(v)==11:
+                                if v in video_id:
+                                    continue
+                                video_id.append(v)
         for i in range(len(video_id)):
             url.append(f"https://www.youtube.com/watch?v={video_id[i]}")
-        st.write(len(video_id))
         for link in url:
                 try:
                     if(count==n_video):
@@ -84,10 +87,10 @@ def proceed(search,n_video,StrtSec,out,mailid):
                     st.write(f'downloaded : {vid.title}')
                 except:
                     pass
-            # st.write(f"break : {link}")
-            # url.remove(link)
-            # st.error("Connection problem please check your connection and try again")    
-            # st.stop()
+            ## st.write(f"break : {link}")
+            ## url.remove(link)
+            ##st.error("Connection problem please check your connection and try again")    
+            ## st.stop()
 
         for j in range(count):
             video = VideoFileClip(f"{j}.mp4")
