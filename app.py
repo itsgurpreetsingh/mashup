@@ -163,7 +163,7 @@ st.title("MASHUP GENERATOR")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
     n_video=st.number_input("Enter number of videos",0,step= 1,format='%d')
-    EndSec = st.number_input("Enter duration of each video",0,step= 1,format='%d')
+    EndSec = st.number_input("Enter duration of each video (in seconds)",0,step= 1,format='%d')
     out=st.text_input("Enter name of output file", "output.mp3") 
     mailid=st.text_input("Enter Email Id") 
     submitted = st.form_submit_button("Submit")
