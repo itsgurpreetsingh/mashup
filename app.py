@@ -13,7 +13,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import re
 import json
-def check(search,n_video,StrtSec,out,mailid):
+def check(search,n_video,EndSec,out,mailid):
     error=True
     if(out[-4:]!=".mp3"):
             st.error('Output file format not supported please enter ".mp3"')   
@@ -34,13 +34,13 @@ def check(search,n_video,StrtSec,out,mailid):
 
     return error  
 
-def proceed(search,n_video,StrtSec,out,mailid):
+def proceed(search,n_video,EndSec,out,mailid):
         print(search)
         print(n_video)
-        print(StrtSec)
+        print(EndSec)
         print(out)  
-        EndSec = 20
-        StrtTime = StrtSec*1000
+        StrtTime = 1*1000
+        EndTime=EndSec*1000
         v_name=[]
         count=0
         video_id=[]
@@ -166,19 +166,19 @@ st.title("MASHUP GENERATOR")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
     n_video=st.number_input("Enter number of videos",0,step= 1,format='%d')
-    StrtSec = st.number_input("Enter duration of each video",0,step= 1,format='%d')
+    EndSec = st.number_input("Enter duration of each video",0,step= 1,format='%d')
     out=st.text_input("Enter name of output file", "output.mp3") 
     mailid=st.text_input("Enter Email Id") 
     submitted = st.form_submit_button("Submit")
     
     if submitted:
-        st.write("text_input", search, "number_input", n_video,"number_input",StrtSec,"text_input",out,"text_input",mailid)
+        st.write("text_input", search, "number_input", n_video,"number_input",EndSec,"text_input",out,"text_input",mailid)
         n_video=int(n_video)
         with st.spinner('Your mashup is in processing..It may take few minutes'):
 
-            flag=check(search,n_video,StrtSec,out,mailid)
+            flag=check(search,n_video,EndSec,out,mailid)
             if(flag==True):
-                proceed(search,n_video,StrtSec,out,mailid)
+                proceed(search,n_video,EndSec,out,mailid)
             else:
                 st.error(flag)
         st.success('Done!')    
