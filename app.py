@@ -101,9 +101,6 @@ def proceed(search,n_video,EndSec,out,mailid):
             file=f"{k}.mp3"
             sound = AudioSegment.from_file(file)
             audFile = MP3(file)
-            audio_info = audFile.info    
-            duration = int(audio_info.length)
-            EndTime=duration*1000
             p1 = sound[StrtTime: EndTime]
             p1.export(f'{k}.mp3', format='mp3')
         for p in range(count):
