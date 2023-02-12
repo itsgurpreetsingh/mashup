@@ -26,7 +26,7 @@ def check(search,n_video,EndSec,out,mailid):
     else:   
         error="Invalid email address"
 
-    if type(n_video)=='int' and type(StrtSec)=='int':
+    if type(n_video)=='int' and type(EndSec)=='int':
         error="Audio duration and number of videos must be an integer"
 
     if(n_video==0):
