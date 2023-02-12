@@ -119,48 +119,49 @@ def proceed(search,n_video,StrtSec,out,mailid):
         for f in range(count):
             os.remove(f'{f}.mp3')
             os.remove(f'{f}.mp4')
-
-        fromaddr = "gsingh102003@gmail.com"
-        toaddr = mailid
-        msg = MIMEMultipart()
-        msg['From'] = fromaddr
-        msg['To'] = toaddr
-        msg['Subject'] = "Mashup file"
-        body = "Your mashup"
-        msg.attach(MIMEText(body, 'plain'))
-        attachment = open('Mashup.zip', "rb")
-        p = MIMEBase('application', 'octet-stream')
-        p.set_payload((attachment).read())
+        try:
+            fromaddr = "gsingh102003@gmail.com"
+            toaddr = mailid
+            msg = MIMEMultipart()
+            msg['From'] = fromaddr
+            msg['To'] = toaddr
+            msg['Subject'] = "Mashup file"
+            body = "Your mashup"
+            msg.attach(MIMEText(body, 'plain'))
+            attachment = open('Mashup.zip', "rb")
+            p = MIMEBase('application', 'octet-stream')
+            p.set_payload((attachment).read())
   
-        # encode into base64
-        encoders.encode_base64(p)
+            # encode into base64
+            encoders.encode_base64(p)
    
-        p.add_header('Content-Disposition', "attachment; filename= %s" % "Mashup.zip")
+            p.add_header('Content-Disposition', "attachment; filename= %s" % "Mashup.zip")
   
-        # attach the instance 'p' to instance 'msg'
-        msg.attach(p)
+            # attach the instance 'p' to instance 'msg'
+            msg.attach(p)
   
-        # creates SMTP session
-        s = smtplib.SMTP('smtp.gmail.com',587)
+            # creates SMTP session
+            s = smtplib.SMTP('smtp.gmail.com',587)
   
-        # start TLS for security
-        s.starttls()
+            # start TLS for security
+            s.starttls()
   
-        # Authentication
-        s.login(fromaddr, "erbaazraounsrsqp")
+            # Authentication
+            s.login(fromaddr, "erbaazraounsrsqp")
   
-        # Converts the Multipart msg into a string
-        text = msg.as_string()
+            # Converts the Multipart msg into a string
+            text = msg.as_string()
   
-        # sending the mail
-        s.sendmail(fromaddr, toaddr, text)
+            # sending the mail
+            s.sendmail(fromaddr, toaddr, text)
   
-        # terminating the session
-        s.quit()
-        os.remove(out)
-        os.remove('Mashup.zip')
-        st.success("Mashup successfully sent on mail")
-    
+            # terminating the session
+            s.quit()
+            os.remove(out)
+            os.remove('Mashup.zip')
+            st.success("Mashup successfully sent on mail")
+        except:
+            st.error("Mashup size exceeds the allowed size by Email please decrease no of videos or duration")
 st.title("MASHUP GENERATOR")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
