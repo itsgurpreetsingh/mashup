@@ -83,8 +83,8 @@ def proceed(search,n_video,StrtSec,out,mailid):
                     v_name.append(vid.title)
                     Yvideo.get_lowest_resolution().download(output_path='./',filename=f"{count}.mp4")
                     count=count+1
-                    st.write(f"link : {link}")
-                    st.write(f'downloaded : {vid.title}')
+                    # st.write(f"link : {link}")
+                    # st.write(f'downloaded : {vid.title}')
                 except:
                     pass
             ## st.write(f"break : {link}")
@@ -161,7 +161,7 @@ def proceed(search,n_video,StrtSec,out,mailid):
             os.remove('Mashup.zip')
             st.success("Mashup successfully sent on mail")
         except:
-            st.error("Mashup size exceeds the allowed size by Email please decrease no of videos or duration")
+            st.error("Mashup size exceeds the allowed size by Email please decrease number of videos or duration")
 st.title("MASHUP GENERATOR")
 with st.form("my_form"):
     search=st.text_input("Enter name of singer") 
