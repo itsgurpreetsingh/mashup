@@ -53,7 +53,7 @@ def proceed(search,n_video,EndSec,out,mailid):
         for i in words:
             response=requests.get(f"https://www.youtube.com/results?search_query={query}+{i}").text
             soup=BeautifulSoup(response,'lxml')
-            scrip.append(soup.find_all("script")[33])
+            scrip.append(soup.find_all("script")[35])
         for script in scrip:
             json_text=re.search('var ytInitialData = (.+)[,;]{1}',str(script)).group(1)
             json_data=json.loads(json_text)
